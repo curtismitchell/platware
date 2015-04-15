@@ -15,22 +15,6 @@ module "vpc" {
   aws_region = "us-east-1"
 }
 
-/* CENTOS AMI: ami-96a818fe */
-/*
-module "app" {
-  source = "./winapp"
-  app_name = "testApp"
-  key_name = "${var.aws.key_name}"
-  public_subnet = "${module.vpc.public_subnet_1}"
-  private_subnet = "${module.vpc.private_subnet_1}"
-  public_subnet_2 = "${module.vpc.public_subnet_2}"
-  private_subnet_2 = "${module.vpc.private_subnet_2}"
-  app_package_url = "https://s3.amazonaws.com/ci-curtismitchell-com-artifacts/hookv0.1.zip"
-  aws_access_key = "${var.aws.access_key}"
-  aws_secret = "${var.aws.secret}"
-  aws_region = "us-east-1"
-}*/
-
 module "build" {
   source = "./build"
   key_name = "${var.aws.key_name}"
@@ -67,10 +51,6 @@ output "private_sub2" {
 output "data_sub2" {
   value = "${module.vpc.data_subnet_2}"
 }
-
-/*output "app_hostname" {
-  value = "${module.app.app_elb}"
-}*/
 
 output "build" {
   value = "${module.build.teamcity}"
