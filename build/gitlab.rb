@@ -1,6 +1,6 @@
 # Change the external_url to the address your users will type in their browser
 # if http
-external_url 'http://gitlab.vesource.com/'
+external_url 'http://git.vesource.com/'
 
 # if https
 #external_url 'https://gitlab.invalid/'

@@ -9,3 +9,4 @@ variable "app_name" {
 }
 variable "ami" { }
 variable "vpc_id" { }
+variable "hosted_zone_id" { }
