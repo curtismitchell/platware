@@ -4,6 +4,8 @@ variable "aws_region" { }
 variable "key_name" { }
 variable "key_path" { }
 variable "public_subnet" { }
+variable "private_subnet" { }
+variable "nat_ip" { }
 variable "app_name" {
   default = "teamcity"
 }

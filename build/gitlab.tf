@@ -3,7 +3,7 @@ resource "aws_instance" "build_gitlab" {
   instance_type = "c4.large"
   key_name = "${var.key_name}"
   associate_public_ip_address = true
-  security_groups = ["${aws_security_group.build.id}"]
+  security_groups = ["${aws_security_group.build.id}", "${aws_security_group.sshable.id}"]
   tags {
       Name = "gitlab"
   }
@@ -13,13 +13,9 @@ resource "aws_instance" "build_gitlab" {
     key_file = "ssh/cm-key-aws.pem"
   }
 
-  provisioner "file" {
-      source = "build/gitlab.rb"
-      destination = "~/gitlab.rb"
-  }
-
   provisioner "remote-exec" {
     inline = [
+    "sudo sed -i 's/ip-172-30-0-77.us-west-2.compute.internal/git.vesource.com/g' /etc/gitlab/gitlab.rb",
     "sudo gitlab-ctl reconfigure"
     ]
   }

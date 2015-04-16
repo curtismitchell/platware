@@ -45,4 +45,4 @@ sudo chkconfig --add teamcity
 sudo chown -R teamcity /srv/TeamCity
 sudo chown -R teamcity /srv/.BuildServer
 
-sudo service teamcity start
+sudo /etc/init.d/teamcity start
