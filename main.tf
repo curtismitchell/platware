@@ -12,37 +12,9 @@ module "vpc" {
   key_path = "${var.aws.private_key_path}"
   aws_access_key = "${var.aws.access_key}"
   aws_secret = "${var.aws.secret}"
-  aws_region = "us-east-1"
-}
-/*
-module "build" {
-  source = "./build"
-  key_name = "${var.aws.key_name}"
-  key_path = "${var.aws.private_key_path}"
-  public_subnet = "${module.vpc.public_subnet_1}"
-  private_subnet = "${module.vpc.private_subnet_1}"
-  nat_ip = "${module.vpc.bastion}"
-  vpc_id = "${module.vpc.vpc_id}"
-  aws_access_key = "${var.aws.access_key}"
-  aws_secret = "${var.aws.secret}"
-  aws_region = "us-east-1"
-  ami = "${var.amis.linux_hvm}"
+  aws_region = "${var.aws.region}"
   hosted_zone_id = "${var.aws.hosted_zone_id}"
-}*/
-
-module "cmp" {
-  source = "./cmp"
-  key_name = "${var.aws.key_name}"
-  key_path = "${var.aws.private_key_path}"
-  public_subnet = "${module.vpc.public_subnet_1}"
-  private_subnet = "${module.vpc.private_subnet_1}"
-  nat_ip = "${module.vpc.bastion}"
-  vpc_id = "${module.vpc.vpc_id}"
-  aws_access_key = "${var.aws.access_key}"
-  aws_secret = "${var.aws.secret}"
-  aws_region = "us-east-1"
-  ami = "${var.amis.linux_hvm}"
-  hosted_zone_id = "${var.aws.hosted_zone_id}"
+  office_cidr = "${var.aws.office_cidr}"
 }
 
 output "public_sub" {

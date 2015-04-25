@@ -13,6 +13,8 @@ variable "aws_access_key" { }
 variable "aws_secret" { }
 variable "aws_region" { }
 variable "key_name" { }
+variable "hosted_zone_id" { }
 variable "key_path" {
     description = "Path to your private key."
 }
+variable "office_cidr" { }

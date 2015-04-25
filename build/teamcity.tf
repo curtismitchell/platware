@@ -1,4 +1,4 @@
-resource "aws_instance" "build" {
+/*resource "aws_instance" "build" {
   ami = "${var.ami}"
   instance_type = "t2.medium"
   key_name = "${var.key_name}"
@@ -47,4 +47,4 @@ resource "aws_route53_record" "teamcity" {
 
 output "teamcity" {
   value = "${aws_instance.build.public_ip}"
-}
+}*/

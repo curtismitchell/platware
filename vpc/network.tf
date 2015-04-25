@@ -85,7 +85,7 @@ resource "aws_route_table" "int" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    instance_id = "${aws_instance.nat.id}"
+    instance_id = "${aws_instance.vpn.id}"
   }
 
   tags {
@@ -128,7 +128,7 @@ resource "aws_route_table" "data" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    instance_id = "${aws_instance.nat.id}"
+    instance_id = "${aws_instance.vpn.id}"
   }
 
   tags {

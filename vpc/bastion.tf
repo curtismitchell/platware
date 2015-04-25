@@ -1,4 +1,4 @@
-resource "aws_instance" "nat" {
+/*resource "aws_instance" "nat" {
     ami = "ami-224dc94a"
     instance_type = "m1.small"
     security_groups = ["${aws_security_group.vpc_nat_group.id}"]
@@ -14,6 +14,25 @@ resource "aws_instance" "nat" {
     tags {
         Name = "${var.env_prefix}_nat"
     }
+}*/
+
+resource "aws_instance" "vpn" {
+  ami = "ami-ce1453a6"
+  instance_type = "t2.micro"
+  security_groups = ["${aws_security_group.vpc_nat_group.id}"]
+  connection {
+    user = "openvpnas"
+    key_file = "${var.key_path}"
+  }
+  key_name = "${var.key_name}"
+  associate_public_ip_address = true
+  source_dest_check = false
+  subnet_id = "${aws_subnet.pub.id}"
+  user_data = "public_hostname=vpn.vesource.com"
+
+  tags {
+      Name = "${var.env_prefix}_vpn"
+  }
 }
 
 resource "aws_security_group" "vpc_nat_group" {
@@ -26,7 +45,7 @@ resource "aws_security_group" "vpc_nat_group" {
       from_port = 22
       to_port = 22
       protocol = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = ["${var.office_cidr}"]
       self = false
   }
 
@@ -43,6 +62,22 @@ resource "aws_security_group" "vpc_nat_group" {
       to_port = 443
       protocol = "tcp"
       cidr_blocks = ["${aws_subnet.pub.cidr_block}", "${aws_subnet.pub2.cidr_block}"]
+      self = false
+  }
+
+  ingress {
+      from_port = 943
+      to_port = 943
+      protocol = "tcp"
+      cidr_blocks = ["${var.office_cidr}"]
+      self = false
+  }
+
+  ingress {
+      from_port = 1194
+      to_port = 1194
+      protocol = "udp"
+      cidr_blocks = ["${var.office_cidr}"]
       self = false
   }
 
@@ -65,6 +100,13 @@ resource "aws_security_group" "vpc_nat_group" {
   }
 }
 
+resource "aws_route53_record" "vpn" {
+   zone_id = "${var.hosted_zone_id}"
+   name = "vpn.vesource.com"
+   type = "A"
+   ttl = "300"
+   records = ["${aws_instance.vpn.public_ip}"]
+}
 
 resource "aws_security_group" "allow_bastion" {
     name = "allow_bastion_ssh"
@@ -80,5 +122,5 @@ resource "aws_security_group" "allow_bastion" {
 }
 
 output "bastion" {
-  value = "${aws_instance.nat.public_ip}"
+  value = "${aws_instance.vpn.public_ip}"
 }
